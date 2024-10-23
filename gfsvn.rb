@@ -17,9 +17,10 @@ class Gfsvn < Formula
     # 获取安装路径
     bin_path = bin.to_s
     lib_path = lib.to_s
-
+    /usr/local/svn/mysql-9.0.1-macos14-x86_64/include
     system "install_name_tool", "-change", "/usr/local/svn/serf/lib/libserf-1.dylib", "#{lib_path}/serf/lib/libserf-1.dylib", "#{bin_path}/svn"
     system "install_name_tool", "-change", "/usr/local/svn/sqlite-amalgamation/lib/libsqlite3.0.dylib", "#{lib_path}/sqlite/lib/libsqlite3.0.dylib", "#{bin_path}/svn"
+    system "install_name_tool", "-change", "/usr/local/svn/mysql-9.0.1-macos14-x86_64/lib/libmysqlclient.dylib", "#{lib_path}/mysql/lib/libmysqlclient.dylib", "#{bin_path}/svn"
     system "install_name_tool", "-change", "/usr/local/opt/gettext/lib/libintl.8.dylib", "#{lib_path}/gettext/lib/libintl.8.dylib", "#{bin_path}/svn"
     system "install_name_tool", "-change", "/usr/local/opt/zlib/lib/libz.1.dylib", "#{lib_path}/zlib/lib/libz.1.dylib", "#{bin_path}/svn"
     system "install_name_tool", "-change", "/usr/local/opt/apr-util/lib/libaprutil-1.0.dylib", "#{lib_path}/apr-util/lib/libaprutil-1.0.dylib", "#{bin_path}/svn"
