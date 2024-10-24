@@ -29,27 +29,26 @@ class Gfsvn < Formula
     system "install_name_tool", "-change", "/usr/local/opt/brotli/lib/libbrotlidec.1.dylib", "#{lib_path}/brotli/lib/libbrotlidec.1.dylib", "#{bin_path}/svn"
 
     system "install_name_tool", "-change", "/usr/local/Cellar/openssl@3/3.1.3/lib/libcrypto.3.dylib", "#{lib_path}/openssl@3/lib/libcrypto.3.dylib", "#{lib_path}/openssl@3/lib/libssl.3.dylib"
-
-    # 定义一个通用的函数来处理文件更新
-    def update_library_paths(lib_path, subdir)
-      files_to_update = Dir["#{lib_path}/#{subdir}/lib/*.dylib"]
-      files_to_update.each do |file|
-        dependencies = `otool -L #{file}`.split("\n").map(&:strip)
-        dependencies.each do |dep|
-          next if dep == file
-          old_path = dep.split(" ").first
-          if old_path.start_with?("/usr/local/opt")
-            new_path = old_path.sub("/usr/local/opt", "#{lib_path}")
-            system "install_name_tool", "-change", old_path, new_path, file
-          end
-        end
-      end
-    end
     
     subdirs = ["curl", "libnghttp2", "libidn2", "brotli", "serf"]
     
     subdirs.each do |subdir|
       update_library_paths(lib_path, subdir)
+    end
+  end
+
+  def update_library_paths(lib_path, subdir)
+    files_to_update = Dir["#{lib_path}/#{subdir}/lib/*.dylib"]
+    files_to_update.each do |file|
+      dependencies = `otool -L #{file}`.split("\n").map(&:strip)
+      dependencies.each do |dep|
+        next if dep == file
+        old_path = dep.split(" ").first
+        if old_path.start_with?("/usr/local/opt")
+          new_path = old_path.sub("/usr/local/opt", "#{lib_path}")
+          system "install_name_tool", "-change", old_path, new_path, file
+        end
+      end
     end
   end
 end
