@@ -31,6 +31,7 @@ class Gfsvn < Formula
     system "install_name_tool", "-change", "/usr/local/opt/brotli/lib/libbrotlidec.1.dylib", "#{lib_path}/brotli/lib/libbrotlidec.1.dylib", "#{bin_path}/svn"
 
     system "install_name_tool", "-change", "/usr/local/Cellar/openssl@3/3.1.3/lib/libcrypto.3.dylib", "#{lib_path}/openssl@3/lib/libcrypto.3.dylib", "#{lib_path}/openssl@3/lib/libssl.3.dylib"
+    system "install_name_tool", "-change", "/usr/local/Cellar/brotli/1.1.0/lib/libbrotlicommon.1.dylib", "#{lib_path}/brotli/lib/libbrotlicommon.1.dylib", "#{lib_path}/brotli/lib/libbrotlidec.1.1.0.dylib"
 
     # 定义需要处理的子目录
     subdirs = ["curl", "libnghttp2", "libidn2", "brotli", "serf"]
