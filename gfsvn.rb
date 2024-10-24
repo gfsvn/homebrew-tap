@@ -35,6 +35,9 @@ class Gfsvn < Formula
     system "install_name_tool", "-change", "/usr/local/opt/libidn2/lib/libidn2.0.dylib", "#{lib_path}/libidn2/lib/libidn2.0.dylib", "#{lib_path}/curl/lib/libcurl.4.dylib"
     system "install_name_tool", "-change", "/usr/local/opt/libidn2/lib/libidn2.0.dylib", "#{lib_path}/libidn2/lib/libidn2.0.dylib", "#{lib_path}/libidn2/lib/libidn2.0.dylib"
     system "install_name_tool", "-change", "/usr/local/opt/libidn2/lib/libidn2.0.dylib", "#{lib_path}/libidn2/lib/libidn2.0.dylib", "#{lib_path}/brotli/lib/libbrotlidec.1.1.0.dylib"
+    system "install_name_tool", "-change", "/usr/local/opt/brotli/lib/libbrotlidec.1.dylib", "#{lib_path}/brotli/lib/libbrotlidec.1.dylib", "#{lib_path}/curl/lib/libcurl.4.dylib"
+    system "install_name_tool", "-change", "/usr/local/opt/brotli/lib/libbrotlidec.1.dylib", "#{lib_path}/brotli/lib/libbrotlidec.1.dylib", "#{lib_path}/libidn2/lib/libidn2.0.dylib"
+    system "install_name_tool", "-change", "/usr/local/opt/brotli/lib/libbrotlidec.1.dylib", "#{lib_path}/brotli/lib/libbrotlidec.1.dylib", "#{lib_path}/brotli/lib/libbrotlidec.1.1.0.dylib"
 
     files_to_update = Dir["#{lib_path}/serf/lib/*.dylib"]
     files_to_update.each do |file|
