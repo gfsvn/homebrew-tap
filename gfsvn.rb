@@ -5,7 +5,7 @@ class Gfsvn < Formula
   desc "Subversion with pristine on demand"
   homepage ""
   url "https://code-res-1257584459.cos.ap-guangzhou.myqcloud.com/SVN/MacSVN/subversion-1.15.0.tar.xz"
-  sha256 "3b897d205f9659df36c22150606a3e5190cbc221defb60fc2a99bb7b030af917"
+  sha256 "0dd897d19aaf3a13dc367906fff5c0601f0980f5e875ddce757bbf8c39c6c413"
   license ""
 
   def install
