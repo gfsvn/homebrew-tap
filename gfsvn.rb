@@ -29,15 +29,45 @@ class Gfsvn < Formula
     system "install_name_tool", "-change", "/usr/local/opt/brotli/lib/libbrotlidec.1.dylib", "#{lib_path}/brotli/lib/libbrotlidec.1.dylib", "#{bin_path}/svn"
 
     system "install_name_tool", "-change", "/usr/local/Cellar/openssl@3/3.1.3/lib/libcrypto.3.dylib", "#{lib_path}/openssl@3/lib/libcrypto.3.dylib", "#{lib_path}/openssl@3/lib/libssl.3.dylib"
-    system "install_name_tool", "-change", "/usr/local/opt/libnghttp2/lib/libnghttp2.14.dylib", "#{lib_path}/libnghttp2/lib/libnghttp2.14.dylib", "#{lib_path}/curl/lib/libcurl.4.dylib"
-    system "install_name_tool", "-change", "/usr/local/opt/libnghttp2/lib/libnghttp2.14.dylib", "#{lib_path}/libnghttp2/lib/libnghttp2.14.dylib", "#{lib_path}/libidn2/lib/libidn2.0.dylib"
-    system "install_name_tool", "-change", "/usr/local/opt/libnghttp2/lib/libnghttp2.14.dylib", "#{lib_path}/libnghttp2/lib/libnghttp2.14.dylib", "#{lib_path}/brotli/lib/libbrotlidec.1.1.0.dylib"
-    system "install_name_tool", "-change", "/usr/local/opt/libidn2/lib/libidn2.0.dylib", "#{lib_path}/libidn2/lib/libidn2.0.dylib", "#{lib_path}/curl/lib/libcurl.4.dylib"
-    system "install_name_tool", "-change", "/usr/local/opt/libidn2/lib/libidn2.0.dylib", "#{lib_path}/libidn2/lib/libidn2.0.dylib", "#{lib_path}/libidn2/lib/libidn2.0.dylib"
-    system "install_name_tool", "-change", "/usr/local/opt/libidn2/lib/libidn2.0.dylib", "#{lib_path}/libidn2/lib/libidn2.0.dylib", "#{lib_path}/brotli/lib/libbrotlidec.1.1.0.dylib"
-    system "install_name_tool", "-change", "/usr/local/opt/brotli/lib/libbrotlidec.1.dylib", "#{lib_path}/brotli/lib/libbrotlidec.1.dylib", "#{lib_path}/curl/lib/libcurl.4.dylib"
-    system "install_name_tool", "-change", "/usr/local/opt/brotli/lib/libbrotlidec.1.dylib", "#{lib_path}/brotli/lib/libbrotlidec.1.dylib", "#{lib_path}/libidn2/lib/libidn2.0.dylib"
-    system "install_name_tool", "-change", "/usr/local/opt/brotli/lib/libbrotlidec.1.dylib", "#{lib_path}/brotli/lib/libbrotlidec.1.dylib", "#{lib_path}/brotli/lib/libbrotlidec.1.1.0.dylib"
+
+    files_to_update = Dir["#{lib_path}/libnghttp2/lib/*.dylib"]
+    files_to_update.each do |file|
+      dependencies = `otool -L #{file}`.split("\n").map(&:strip)
+      dependencies.each do |dep|
+        next if dep == file
+        old_path = dep.split(" ").first
+        if old_path.start_with?("/usr/local/opt")
+          new_path = old_path.sub("/usr/local/opt", "#{lib_path}")
+          system "install_name_tool", "-change", old_path, new_path, file
+        end
+      end
+    end
+
+    files_to_update = Dir["#{lib_path}/libidn2/lib/*.dylib"]
+    files_to_update.each do |file|
+      dependencies = `otool -L #{file}`.split("\n").map(&:strip)
+      dependencies.each do |dep|
+        next if dep == file
+        old_path = dep.split(" ").first
+        if old_path.start_with?("/usr/local/opt")
+          new_path = old_path.sub("/usr/local/opt", "#{lib_path}")
+          system "install_name_tool", "-change", old_path, new_path, file
+        end
+      end
+    end
+
+    files_to_update = Dir["#{lib_path}/brotli/lib/*.dylib"]
+    files_to_update.each do |file|
+      dependencies = `otool -L #{file}`.split("\n").map(&:strip)
+      dependencies.each do |dep|
+        next if dep == file
+        old_path = dep.split(" ").first
+        if old_path.start_with?("/usr/local/opt")
+          new_path = old_path.sub("/usr/local/opt", "#{lib_path}")
+          system "install_name_tool", "-change", old_path, new_path, file
+        end
+      end
+    end
 
     files_to_update = Dir["#{lib_path}/serf/lib/*.dylib"]
     files_to_update.each do |file|
