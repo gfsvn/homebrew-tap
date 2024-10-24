@@ -24,8 +24,15 @@ class Gfsvn < Formula
     system "install_name_tool", "-change", "/usr/local/opt/zlib/lib/libz.1.dylib", "#{lib_path}/zlib/lib/libz.1.dylib", "#{bin_path}/svn"
     system "install_name_tool", "-change", "/usr/local/opt/apr-util/lib/libaprutil-1.0.dylib", "#{lib_path}/apr-util/lib/libaprutil-1.0.dylib", "#{bin_path}/svn"
     system "install_name_tool", "-change", "/usr/local/opt/apr/lib/libapr-1.0.dylib", "#{lib_path}/apr/lib/libapr-1.0.dylib", "#{bin_path}/svn"
+    system "install_name_tool", "-change", "/usr/local/opt/libnghttp2/lib/libnghttp2.14.dylib", "#{lib_path}/libnghttp2/lib/libnghttp2.14.dylib", "#{bin_path}/svn"
+    system "install_name_tool", "-change", "/usr/local/opt/libidn2/lib/libidn2.0.dylib", "#{lib_path}/libidn2/lib/libidn2.0.dylib", "#{bin_path}/svn"
+    system "install_name_tool", "-change", "/usr/local/opt/brotli/lib/libbrotlidec.1.dylib", "#{lib_path}/brotli/lib/libbrotlidec.1.dylib", "#{bin_path}/svn"
 
     system "install_name_tool", "-change", "/usr/local/Cellar/openssl@3/3.1.3/lib/libcrypto.3.dylib", "#{lib_path}/openssl@3/lib/libcrypto.3.dylib", "#{lib_path}/openssl@3/lib/libssl.3.dylib"
+    system "install_name_tool", "-change", "/usr/local/opt/libnghttp2/lib/libnghttp2.14.dylib", "#{lib_path}/libnghttp2/lib/libnghttp2.14.dylib", "#{lib_path}/curl/lib/libcurl.4.dylib"
+    system "install_name_tool", "-change", "/usr/local/opt/libnghttp2/lib/libnghttp2.14.dylib", "#{lib_path}/libnghttp2/lib/libnghttp2.14.dylib", "#{lib_path}/libidn2/lib/libidn2.0.dylib"
+    system "install_name_tool", "-change", "/usr/local/opt/libnghttp2/lib/libnghttp2.14.dylib", "#{lib_path}/libnghttp2/lib/libnghttp2.14.dylib", "#{lib_path}/brotli/lib/libbrotlidec.1.1.0.dylib"
+
     files_to_update = Dir["#{lib_path}/serf/lib/*.dylib"]
     files_to_update.each do |file|
       dependencies = `otool -L #{file}`.split("\n").map(&:strip)
