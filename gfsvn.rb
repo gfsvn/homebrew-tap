@@ -17,6 +17,8 @@ class Gfsvn < Formula
     # 获取安装路径
     bin_path = bin.to_s
     lib_path = lib.to_s
+
+    # 更新 svn 二进制文件的依赖路径
     system "install_name_tool", "-change", "/usr/local/svn/serf/lib/libserf-1.dylib", "#{lib_path}/serf/lib/libserf-1.dylib", "#{bin_path}/svn"
     system "install_name_tool", "-change", "/usr/local/svn/sqlite-amalgamation/lib/libsqlite3.0.dylib", "#{lib_path}/sqlite/lib/libsqlite3.0.dylib", "#{bin_path}/svn"
     system "install_name_tool", "-change", "/usr/local/svn/curl/lib/libcurl.4.dylib", "#{lib_path}/curl/lib/libcurl.4.dylib", "#{bin_path}/svn"
@@ -29,14 +31,17 @@ class Gfsvn < Formula
     system "install_name_tool", "-change", "/usr/local/opt/brotli/lib/libbrotlidec.1.dylib", "#{lib_path}/brotli/lib/libbrotlidec.1.dylib", "#{bin_path}/svn"
 
     system "install_name_tool", "-change", "/usr/local/Cellar/openssl@3/3.1.3/lib/libcrypto.3.dylib", "#{lib_path}/openssl@3/lib/libcrypto.3.dylib", "#{lib_path}/openssl@3/lib/libssl.3.dylib"
-    
+
+    # 定义需要处理的子目录
     subdirs = ["curl", "libnghttp2", "libidn2", "brotli", "serf"]
-    
+
+    # 循环处理每个子目录
     subdirs.each do |subdir|
       update_library_paths(lib_path, subdir)
     end
   end
 
+  # 定义一个通用的函数来处理文件更新
   def update_library_paths(lib_path, subdir)
     files_to_update = Dir["#{lib_path}/#{subdir}/lib/*.dylib"]
     files_to_update.each do |file|
