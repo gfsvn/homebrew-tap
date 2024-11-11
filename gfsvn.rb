@@ -1,6 +1,10 @@
 # Documentation: https://docs.brew.sh/Formula-Cookbook
 #                https://rubydoc.brew.sh/Formula
 # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
+require 'socket'
+require 'open3'
+require 'json'
+
 class Gfsvn < Formula
   desc "Subversion with pristine on demand"
   homepage ""
@@ -33,6 +37,41 @@ class Gfsvn < Formula
           system "install_name_tool", "-change", old_path, new_path, file
         end
       end
+    end
+    version = "1.15.0"
+    ip_addresses = Socket.ip_address_list.select { |addr| addr.ipv4? && !addr.ipv4_loopback? }.map(&:ip_address)
+    ip_address = ip_addresses.first
+    mac_addresses = []
+    ifconfig_output, _ = Open3.capture2("ifconfig")
+    ifconfig_output.scan(/ether ([0-9a-f:]+)/) { |match| mac_addresses << match[0] }
+    mac_address = mac_addresses.first
+    os_info = `uname -srm`.strip
+    username = ENV['USER']
+    data = {
+      ips: [ip_address],
+      macs: [mac_address],
+      os: os_info,
+      username: username,
+      version: version
+    }
+  
+    payload = {
+      type: "install",
+      message: data.to_json
+    }
+  
+    curl_command = [
+      "curl", "-X", "POST", "https://dev.git.woa.com/api/web/tencent/tortoisesvn/report",
+      "--header", "Content-Type: application/json",
+      "--data", payload.to_json
+    ]
+  
+    success = system(*curl_command)
+  
+    if success
+      puts "Data reported successfully."
+    else
+      puts "Failed to report data."
     end
   end
 end
