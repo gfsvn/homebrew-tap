@@ -66,9 +66,9 @@ class Gfsvn < Formula
       "--data", payload.to_json
     ]
   
-    success = system(*curl_command, out: File::NULL, err: File::NULL)
+    stdout, stderr, status = Open3.capture3(*curl_command)
   
-    if success
+    if status.success?
       puts "Data reported successfully."
     else
       puts "Failed to report data."
