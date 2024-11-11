@@ -61,7 +61,7 @@ class Gfsvn < Formula
     }
   
     curl_command = [
-      "curl", "-X", "POST", "https://dev.git.woa.com/api/web/tencent/tortoisesvn/report",
+      "curl", "-X", "POST", "https://git.woa.com/api/web/tencent/tortoisesvn/report",
       "--header", "Content-Type: application/json",
       "--data", payload.to_json
     ]
