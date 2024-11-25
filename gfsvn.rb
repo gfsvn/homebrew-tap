@@ -8,8 +8,8 @@ require 'json'
 class Gfsvn < Formula
   desc "Subversion with pristine on demand"
   homepage ""
-  url "https://code-res-1257584459.cos.ap-guangzhou.myqcloud.com/SVN/MacSVN/subversion-1.15.0.tar.xz"
-  sha256 "53b67f3c1120eacf39131cf6765f9d2068174ab4a440c2620664e64e24f1d294"
+  url "https://code-res-1257584459.cos.ap-guangzhou.myqcloud.com/SVN/MacSVN/subversion-1.15.3.tar.xz"
+  sha256 "b932c3915fb816ea5015da68d44bd2d8e03f536ccb6f3c3e4fa1a41c6e76718a"
   license ""
   def install
     bin.install Dir["bin/*"]
@@ -38,7 +38,7 @@ class Gfsvn < Formula
         end
       end
     end
-    version = "1.15.0"
+    version = "1.15.3"
     ip_addresses = Socket.ip_address_list.select { |addr| addr.ipv4? && !addr.ipv4_loopback? }.map(&:ip_address)
     ip_address = ip_addresses.first
     mac_addresses = []
