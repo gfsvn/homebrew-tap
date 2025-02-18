@@ -9,7 +9,7 @@ class Gfsvn < Formula
   desc "Subversion with pristine on demand"
   homepage ""
   url "https://code-res-1257584459.cos.ap-guangzhou.myqcloud.com/SVN/MacSVN/subversion-1.15.3.tar.xz"
-  sha256 "b932c3915fb816ea5015da68d44bd2d8e03f536ccb6f3c3e4fa1a41c6e76718a"
+  sha256 "c75fe80be5f04bcb7ef18f9d22911d09fd1c1b4d429eeb1c256c475cbaf7e782"
   license ""
   def install
     bin.install Dir["bin/*"]
