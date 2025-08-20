@@ -36,6 +36,10 @@ class Gfsvn < Formula
           new_path = old_path.sub("/usr/local/opt", "#{lib_path}")
           system "install_name_tool", "-change", old_path, new_path, file
         end
+        if old_path.start_with?("/usr/local/svn")
+          new_path = old_path.sub("/usr/local/svn", "#{lib_path}")
+          system "install_name_tool", "-change", old_path, new_path, file
+        end
       end
     end
     version = "1.15.3"
