@@ -78,31 +78,5 @@ class Gfsvn < Formula
     else
       puts "Failed to report data."
     end
-
-    # Fix SSL certificate verification: the bundled OpenSSL was compiled with
-    # OPENSSLDIR="/usr/local/etc/openssl@3" (x86 path), but on Apple Silicon
-    # Homebrew installs to /opt/homebrew, so cert.pem is missing at that path.
-    # Only apply this fix on Apple Silicon (where /opt/homebrew exists);
-    # on x86 Macs /usr/local/etc/openssl@3/cert.pem already exists natively.
-    #
-    # Strategy:
-    #   1. Prefer a symlink to /opt/homebrew/etc/openssl@3/cert.pem (lightweight,
-    #      stays up-to-date when Homebrew updates openssl@3).
-    #   2. Fall back to exporting the macOS system keychain as PEM (always available,
-    #      no Homebrew dependency required).
-    brew_cert    = "/opt/homebrew/etc/openssl@3/cert.pem"
-    system_keychain = "/System/Library/Keychains/SystemRootCertificates.keychain"
-    openssl_dir  = "/usr/local/etc/openssl@3"
-    openssl_cert = "#{openssl_dir}/cert.pem"
-    if File.directory?("/opt/homebrew") && !File.exist?(openssl_cert)
-      system "mkdir", "-p", openssl_dir
-      if File.exist?(brew_cert)
-        # Preferred: symlink to Homebrew-managed cert bundle
-        system "ln", "-sf", brew_cert, openssl_cert
-      elsif File.exist?(system_keychain)
-        # Fallback: export from macOS system keychain
-        system "security", "find-certificate", "-a", "-p", system_keychain, :out => openssl_cert
-      end
-    end
   end
 end
