@@ -78,5 +78,17 @@ class Gfsvn < Formula
     else
       puts "Failed to report data."
     end
+
+    # Fix SSL certificate verification: the bundled OpenSSL was compiled with
+    # OPENSSLDIR="/usr/local/etc/openssl@3" (x86 path), but on Apple Silicon
+    # Homebrew installs to /opt/homebrew. Create the expected directory and
+    # symlink cert.pem so OpenSSL can find the system CA bundle automatically.
+    brew_cert = "/opt/homebrew/etc/ca-certificates/cert.pem"
+    openssl_dir = "/usr/local/etc/openssl@3"
+    openssl_cert = "#{openssl_dir}/cert.pem"
+    if File.exist?(brew_cert) && !File.exist?(openssl_cert)
+      system "mkdir", "-p", openssl_dir
+      system "ln", "-sf", brew_cert, openssl_cert
+    end
   end
 end
